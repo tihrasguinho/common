@@ -63,6 +63,11 @@ abstract class Bloc<E extends Object?, S extends Object?> {
     return _handlers.add(_Handler<T, S>(event: T, handler: handler));
   }
 
+  /// Disposes the current bloc.
+  void dispose() {
+    _controller.close();
+  }
+
   void _setState(S newState) {
     if (newState != _state) {
       _state = newState;
