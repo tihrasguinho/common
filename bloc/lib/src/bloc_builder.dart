@@ -7,14 +7,20 @@ import 'bloc.dart';
 class BlocBuilder<E extends Object?, S extends Object?> extends StatefulWidget {
   const BlocBuilder({
     super.key,
+
+    /// The [Bloc] to build.
     required this.bloc,
+
+    /// The widget builder.
     required this.builder,
-    this.doBefore,
+
+    /// Called to determine whether the [BlocBuilder] should rebuild
+    this.shouldRebuild,
   });
 
   final Bloc<E, S> bloc;
   final Widget Function(BuildContext context, S state) builder;
-  final void Function()? doBefore;
+  final bool Function(S previous, S next)? shouldRebuild;
 
   @override
   State<BlocBuilder<E, S>> createState() => _BlocBuilderState<E, S>();
@@ -25,6 +31,10 @@ class _BlocBuilderState<E extends Object?, S extends Object?> extends State<Bloc
   late StreamSubscription<S> subscription;
 
   void _handleChanges(S state) {
+    if (widget.shouldRebuild?.call(this.state, state) == false) {
+      return;
+    }
+
     if (!mounted) return;
 
     setState(() {
@@ -35,8 +45,6 @@ class _BlocBuilderState<E extends Object?, S extends Object?> extends State<Bloc
   @override
   void initState() {
     super.initState();
-
-    widget.doBefore?.call();
 
     subscription = widget.bloc.stream.listen(_handleChanges);
   }
