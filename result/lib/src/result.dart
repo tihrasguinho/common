@@ -10,7 +10,7 @@ sealed class Result<S extends Object?, E extends Object?> {
 
   S? getSuccessOrNull() => _success;
 
-  S? getSuccessOrThrow() {
+  S getSuccessOrThrow() {
     if (_success == null) throw Exception('Left value is null');
 
     return _success;
@@ -22,7 +22,7 @@ sealed class Result<S extends Object?, E extends Object?> {
 
   E? getErrorOrNull() => _error;
 
-  E? getErrorOrThrow() {
+  E getErrorOrThrow() {
     if (_error == null) throw Exception('Right value is null');
 
     return _error;
