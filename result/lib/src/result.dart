@@ -13,7 +13,7 @@ sealed class Result<S extends Object?, E extends Object?> {
   S getSuccessOrThrow() {
     if (_success == null) throw Exception('Left value is null');
 
-    return _success;
+    return _success!;
   }
 
   S? getSuccessOrElse(S Function() orElse) => _success ?? orElse();
@@ -25,7 +25,7 @@ sealed class Result<S extends Object?, E extends Object?> {
   E getErrorOrThrow() {
     if (_error == null) throw Exception('Right value is null');
 
-    return _error;
+    return _error!;
   }
 
   E? getErrorOrElse(E Function() orElse) => _error ?? orElse();
