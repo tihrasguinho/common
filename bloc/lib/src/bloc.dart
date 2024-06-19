@@ -13,7 +13,7 @@ typedef EventHandler<E extends Object?, S extends Object?> = FutureOr<void> Func
 ///   }
 /// }
 /// ```
-abstract class Bloc<E extends Object?, S extends Object?> {
+abstract class Bloc<E extends Object?, S extends Object?> extends Stream<S> {
   /// Creates a new [Bloc].
   Bloc(S initialState) {
     _state = initialState;
@@ -73,6 +73,16 @@ abstract class Bloc<E extends Object?, S extends Object?> {
       _state = newState;
       _controller.add(newState);
     }
+  }
+
+  @override
+  StreamSubscription<S> listen(void Function(S event)? onData, {Function? onError, void Function()? onDone, bool? cancelOnError}) {
+    return stream.listen(
+      onData,
+      onError: onError,
+      onDone: onDone,
+      cancelOnError: cancelOnError,
+    );
   }
 }
 
