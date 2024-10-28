@@ -1,5 +1,3 @@
-typedef AsyncResult<S extends Object?, E extends Object?> = Future<Result<S, E>>;
-
 sealed class Result<S extends Object?, E extends Object?> {
   final S? _success;
   final E? _error;
@@ -32,9 +30,9 @@ sealed class Result<S extends Object?, E extends Object?> {
 
   T on<T>(T Function(S success) onSuccess, T Function(E error) onError) {
     if (isSuccess) {
-      return onSuccess(getSuccessOrThrow() as S);
+      return onSuccess(getSuccessOrThrow());
     } else {
-      return onError(getErrorOrThrow() as E);
+      return onError(getErrorOrThrow());
     }
   }
 }
